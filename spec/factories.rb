@@ -1,4 +1,11 @@
 FactoryBot.define do
+  factory :discount do
+    name { "MyString" }
+    percentage_discount { 1 }
+    quantity_threshold { 1 }
+    merchant_references { "MyString" }
+  end
+
   factory :customer do
     first_name {Faker::Name.first_name}
     last_name {Faker::Dessert.variety}

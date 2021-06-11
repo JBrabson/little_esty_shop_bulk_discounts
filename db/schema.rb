@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_04_204649) do
+ActiveRecord::Schema.define(version: 2021_06_11_143938) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,15 @@ ActiveRecord::Schema.define(version: 2021_03_04_204649) do
     t.string "city"
     t.string "state"
     t.bigint "zip"
+  end
+
+  create_table "discounts", force: :cascade do |t|
+    t.string "name"
+    t.integer "percentage_discount"
+    t.integer "quantity_threshold"
+    t.string "merchant_references"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "invoice_items", force: :cascade do |t|
