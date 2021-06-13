@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :items, except: [:destroy]
     resources :item_status, only: [:update]
     resources :invoices, only: [:index, :show, :update]
+    resources :discounts
   end
 
   namespace :admin do
@@ -13,4 +14,7 @@ Rails.application.routes.draw do
     resources :merchant_status, only: [:update]
     resources :invoices, except: [:new, :destroy]
   end
+
+  resources :invoices
+  resources :discounts
 end
