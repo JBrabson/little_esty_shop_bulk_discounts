@@ -14,7 +14,4 @@ Rails.application.routes.draw do
     resources :merchant_status, only: [:update]
     resources :invoices, except: [:new, :destroy]
   end
-
-  resources :invoices
-  resources :discounts
 end
