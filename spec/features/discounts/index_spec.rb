@@ -46,4 +46,13 @@ RSpec.describe 'Merchant Bulk Discounts Index' do
       expect(page).to have_link("#{@discount3.name} Discount")
     end
   end
+
+  describe 'displays a section with header "Upcoming Holidays"' do
+    it 'and this section displays the next 3 upcoming US holidays dates and names' do
+      expect(page).to have_content('Upcoming Holidays')
+      expect(page).to have_content('Independence Day, 2021-07-05')
+      expect(page).to have_content('Labour Day, 2021-09-06')
+      expect(page).to have_content('Columbus Day, 2021-10-11')
+    end
+  end
 end
