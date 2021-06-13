@@ -4,7 +4,7 @@ class CreateDiscounts < ActiveRecord::Migration[5.2]
       t.string :name
       t.integer :percentage_discount
       t.integer :quantity_threshold
-      t.string :merchant_references
+      t.references :merchant, foreign_key: true
 
       t.timestamps
     end
