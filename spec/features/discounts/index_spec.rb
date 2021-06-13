@@ -55,4 +55,12 @@ RSpec.describe 'Merchant Bulk Discounts Index' do
       expect(page).to have_content('Columbus Day, 2021-10-11')
     end
   end
+
+  describe 'Merchant Bulk Discount Create' do
+    it 'displays link to create new discount that directs to new page with form to add new discount' do
+      expect(page).to have_link("Create Discount")
+      click_link "Create Discount"
+      expect(current_path).to eq(new_merchant_discount_path(@merchant1))
+    end
+  end
 end
