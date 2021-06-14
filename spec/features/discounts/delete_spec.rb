@@ -13,26 +13,26 @@ RSpec.describe 'Merchant Bulk Discounts Index' do
       within("#discount-#{@discount1.id}") do
         click_link "Delete #{@discount1.name} Discount"
         expect(current_path).to eq(merchant_discounts_path(@merchant1))
-        expect(page).to_not have_content(@discount1.name)
-        expect(page).to have_content(@discount2.name)
-        expect(page).to have_content(@discount3.name)
       end
+      expect(page).to_not have_content(@discount1.name)
+      expect(page).to have_content(@discount2.name)
+      expect(page).to have_content(@discount3.name)
 
-      within("#discount-#{@discount2.id}") do
-        click_link "Delete #{@discount2.name} Discount"
-        expect(current_path).to eq(merchant_discounts_path(@merchant1))
-        expect(page).to_not have_content(@discount2.name)
-        expect(page).to have_content(@discount1.name)
-        expect(page).to have_content(@discount3.name)
-      end
-
-      within("#discount-#{@discount3.id}") do
-        click_link "Delete #{@discount3.name} Discount"
-        expect(current_path).to eq(merchant_discounts_path(@merchant1))
-        expect(page).to_not have_content(@discount3.name)
-        expect(page).to have_content(@discount1.name)
-        expect(page).to have_content(@discount2.name)
-      end
+      # within("#discount-#{@discount2.id}") do
+      #   click_link "Delete #{@discount2.name} Discount"
+      #   expect(current_path).to eq(merchant_discounts_path(@merchant1))
+      # end
+      # expect(page).to_not have_content(@discount2.name)
+      # expect(page).to have_content(@discount1.name)
+      # expect(page).to have_content(@discount3.name)
+      #
+      # within("#discount-#{@discount3.id}") do
+      #   click_link "Delete #{@discount3.name} Discount"
+      #   expect(current_path).to eq(merchant_discounts_path(@merchant1))
+      # end
+      # expect(page).to_not have_content(@discount3.name)
+      # expect(page).to have_content(@discount1.name)
+      # expect(page).to have_content(@discount2.name)
     end
   end
 end
