@@ -55,4 +55,34 @@ RSpec.describe 'Merchant Bulk Discounts Index' do
       expect(page).to have_content('Columbus Day, 2021-10-11')
     end
   end
+
+  describe 'Merchant Bulk Discount Create' do
+    it 'displays link to create new discount that directs to new page with form to add new discount' do
+      expect(page).to have_link("Create Discount")
+      click_link "Create Discount"
+      expect(current_path).to eq(new_merchant_discount_path(@merchant1))
+    end
+  end
+
+  describe 'Merchant Bulk Discount Delete' do
+    it 'displays link to delete discount - located next to each discount' do
+      within("#discount-#{@discount1.id}") do
+        expect(page).to have_link("Delete #{@discount1.name} Discount")
+        expect(page).to_not have_link("Delete #{@discount2.name} Discount")
+        expect(page).to_not have_link("Delete #{@discount3.name} Discount")
+      end
+
+      within("#discount-#{@discount2.id}") do
+        expect(page).to have_link("Delete #{@discount2.name} Discount")
+        expect(page).to_not have_link("Delete #{@discount1.name} Discount")
+        expect(page).to_not have_link("Delete #{@discount3.name} Discount")
+      end
+
+      within("#discount-#{@discount3.id}") do
+        expect(page).to have_link("Delete #{@discount3.name} Discount")
+        expect(page).to_not have_link("Delete #{@discount1.name} Discount")
+        expect(page).to_not have_link("Delete #{@discount2.name} Discount")
+      end
+    end
+  end
 end
