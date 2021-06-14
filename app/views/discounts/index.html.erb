@@ -6,7 +6,8 @@
       <p><%= link_to "#{discount.name} Discount", merchant_discount_path(@merchant, discount) %></p>
       <p>Discount Percentage: <%= discount.percentage_discount %></p>
       <p>Quantity Threshold: <%= discount.quantity_threshold %></p>
-      <p>---------------------------</p>
+      <p><%= link_to "Delete #{discount.name} Discount", merchant_discount_path(@merchant, discount) %></p>
+      <p>- - - - - - - - - - - - - - - -</p>
     </ul>
   </section>
 <% end %><br>
