@@ -84,22 +84,5 @@ RSpec.describe 'Merchant Bulk Discounts Index' do
         expect(page).to_not have_link("Delete #{@discount2.name} Discount")
       end
     end
-
-    it 'and when link is clicked, page is redirected to discounts index page where discount is no longer listed' do
-      within("#discount-#{@discount1.id}") do
-        click_link "Delete Discount"
-      end
-
-      expect(current_path).to eq(merchant_discounts_path(@merchant1))
-      expect(page).to_not have_content(@discount1.name)
-      expect(page).to_not have_content(@discount1.percentage_discount)
-      expect(page).to_not have_content(@discount1.quantity_threshold)
-      expect(page).to have_content(@discount2.name)
-      expect(page).to have_content(@discount2.percentage_discount)
-      expect(page).to have_content(@discount2.quantity_threshold)
-      expect(page).to have_content(@discount3.name)
-      expect(page).to have_content(@discount3.percentage_discount)
-      expect(page).to have_content(@discount3.quantity_threshold)
-    end
   end
 end

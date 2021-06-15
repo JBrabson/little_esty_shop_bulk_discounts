@@ -18,6 +18,8 @@ class DiscountsController < ApplicationController
   end
 
   def update
+    @discount.update(discount_params)
+    redirect_to merchant_discount_path(@merchant, @discount)
   end
 
   def create
