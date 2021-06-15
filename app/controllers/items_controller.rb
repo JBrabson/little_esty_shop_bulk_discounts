@@ -8,11 +8,9 @@ class ItemsController < ApplicationController
   end
 
   def show
-
   end
 
   def edit
-
   end
 
   def update
@@ -26,7 +24,6 @@ class ItemsController < ApplicationController
   end
 
   def new
-
   end
 
   def create
@@ -34,10 +31,14 @@ class ItemsController < ApplicationController
                 description: params[:description],
                 unit_price: params[:unit_price],
                 id: find_new_id, merchant: @merchant)
+
     redirect_to merchant_items_path(@merchant)
   end
 
+
+
   private
+
   def item_params
     params.require(:item).permit(:name, :description, :unit_price, :merchant_id)
   end

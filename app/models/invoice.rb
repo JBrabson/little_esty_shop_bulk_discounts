@@ -19,6 +19,4 @@ class Invoice < ApplicationRecord
       i.final_revenue
     end
   end
-
-  #invoice_items.sum(final_revenue)
 end
