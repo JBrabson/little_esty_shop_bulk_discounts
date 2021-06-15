@@ -124,4 +124,46 @@ RSpec.describe 'Invoice Show Page' do
 
     expect(page).to have_content(invoice_1.total_discounted_revenue)
   end
+
+  it "displays link to discount show page for each invoice item where discount is applied" do
+     merchant1 = Merchant.create!(name: 'Hair Care')
+     item_1 = Item.create!(name: "Shampoo", description: "This washes your hair", unit_price: 10, merchant_id: merchant1.id, status: 1)
+     item_8 = Item.create!(name: "Butterfly Clip", description: "This holds up your hair but in a clip", unit_price: 5, merchant_id: merchant1.id)
+     customer_1 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
+     discount_1 = merchant1.discounts.create!(name: "20%", percentage_discount: 20, quantity_threshold: 10 )
+     invoice_1 = Invoice.create!(customer_id: customer_1.id, status: 2, created_at: "2012-03-27 14:54:09")
+     ii_1 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_1.id, quantity: 10, unit_price: 10, status: 2)
+     ii_11 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_8.id, quantity: 10, unit_price: 10, status: 1)
+
+     visit merchant_invoice_path(merchant1, invoice_1)
+
+     within("#discount-link-#{ii_1.id}") do
+       expect(page).to have_link('Item Discount')
+     end
+
+     within("#discount-link-#{ii_11.id}") do
+       expect(page).to have_link('Item Discount')
+     end
+   end
+
+   it "does not display link to discount show page next to invoice items where discount is not applied" do
+     merchant1 = Merchant.create!(name: 'Hair Care')
+     item_1 = Item.create!(name: "Shampoo", description: "This washes your hair", unit_price: 10, merchant_id: merchant1.id, status: 1)
+     item_8 = Item.create!(name: "Butterfly Clip", description: "This holds up your hair but in a clip", unit_price: 5, merchant_id: merchant1.id)
+     customer_1 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
+     discount_1 = merchant1.discounts.create!(name: "20%", percentage_discount: 20, quantity_threshold: 10 )
+     invoice_1 = Invoice.create!(customer_id: customer_1.id, status: 2, created_at: "2012-03-27 14:54:09")
+     ii_1 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_1.id, quantity: 9, unit_price: 10, status: 2)
+     ii_11 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_8.id, quantity: 9, unit_price: 10, status: 1)
+
+     visit merchant_invoice_path(merchant1, invoice_1)
+
+     within("#no-discount-link-#{ii_1.id}") do
+       expect(page).to_not have_link('Item Discount')
+     end
+
+     within("#no-discount-link-#{ii_11.id}") do
+       expect(page).to_not have_link('Item Discount')
+     end
+   end
 end
