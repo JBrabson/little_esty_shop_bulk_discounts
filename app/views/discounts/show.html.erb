@@ -1,5 +1,5 @@
 <h1><%= "#{@discount.name} Discount Details" %></h1>
 
-<p><%= "Percentage Off: #{@discount.percentage_discount}, " %><%= "If a quantity of#{@discount.quantity_threshold} or more is purchased." %></p>
+<p><%= "Purchase #{@discount.quantity_threshold} or More and Receive #{@discount.percentage_discount}% Off!" %></p>
 
 <p><%= link_to 'Edit Discount', edit_merchant_discount_path(@merchant, @discount) %></p>

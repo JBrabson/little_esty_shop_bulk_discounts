@@ -40,6 +40,3 @@ class InvoiceItem < ApplicationRecord
     end
   end
 end
-
-#  write tests for total_revenue, revenue_after_discount, revenue
-#  Finish methods in invoice and write tests in features

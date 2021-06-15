@@ -10,7 +10,6 @@ class DiscountsController < ApplicationController
   def show
   end
 
-
   def new
   end
 
@@ -19,6 +18,7 @@ class DiscountsController < ApplicationController
 
   def update
     @discount.update(discount_params)
+
     redirect_to merchant_discount_path(@merchant, @discount)
   end
 
@@ -37,7 +37,10 @@ class DiscountsController < ApplicationController
     redirect_to "/merchant/#{merchant.id}/discounts"
   end
 
+
+
   private
+
   def discount_params
     params.permit(:name, :percentage_discount, :quantity_threshold)
   end
