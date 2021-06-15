@@ -18,14 +18,13 @@
   <br>
 
   <p> Created on: <%= @invoice.created_at.strftime("%A, %B %-d, %Y") %></p>
-  <p>Total Revenue: <%= @invoice.total_revenue %></p>
-  <p>Total Discounted Revenue: <%= @invoice.total_discounted_revenue %></p>
-
+  <p><%= "#{@merchant.name} Total Revenue: #{@invoice.total_revenue}" %></p>
+  <p>Total Revenue After Discounts Applied: <%= @invoice.total_discounted_revenue %></p>
+  <br>
 
 
   <h4>Customer:</h4>
     <%= @customer.first_name %> <%= @customer.last_name %><br>
-  <br>
   <br>
   <h4>Items on this Invoice:</h4>
   <table class="table">
@@ -50,10 +49,10 @@
               </section>
             <% else %>
               <section id="discount-link-<%= i.id %>">
-                <td style="text-align:center"><%= link_to 'Item Discount', merchant_discount_path(@merchant, i.discount_applied) %></td>
                 <td style="text-align:center"><%= i.item.name %></td>
                 <td style="text-align:center"><%= i.quantity %></td>
                 <td style="text-align:center">$<%= i.unit_price %></td>
+                <td style="text-align:center"><%= link_to 'Item Discount', merchant_discount_path(@merchant, i.discount_applied) %></td>
               </section>
             <% end %>
             <td style="text-align:center"><%= form_with model: @invoice, url: merchant_invoice_path(@merchant, @invoice), method: :patch do |f| %>
