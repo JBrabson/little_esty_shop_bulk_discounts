@@ -9,6 +9,17 @@ class Merchant < ApplicationRecord
 
   enum status: [:enabled, :disabled]
 
+  def invoices_list
+    invoices.distinct
+  end
+
+  def ordered_items_to_ship
+    item_ids = InvoiceItem.where("status = 0 OR status = 1").order(:created_at).pluck(:item_id)
+    item_ids.map do |id|
+      Item.find(id)
+    end
+  end
+
   def favorite_customers
     transactions
     .joins(invoice: :customer)
@@ -17,13 +28,6 @@ class Merchant < ApplicationRecord
     .group('customers.id')
     .order(top_result: :desc)
     .limit(5)
-  end
-
-  def ordered_items_to_ship
-    item_ids = InvoiceItem.where("status = 0 OR status = 1").order(:created_at).pluck(:item_id)
-    item_ids.map do |id|
-      Item.find(id)
-    end
   end
 
   def top_5_items
