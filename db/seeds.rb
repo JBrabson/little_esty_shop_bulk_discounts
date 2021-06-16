@@ -1,14 +1,18 @@
+Item.destroy_all
 Merchant.destroy_all
 Discount.destroy_all
 Customer.destroy_all
 Invoice.destroy_all
 InvoiceItem.destroy_all
+Transaction.destroy_all
 
 pupsfluffs = Merchant.create!(name: "Pups, Fluffs & Stuffs")
+everyday_living = Merchant.create!(name: "Everyday Stuff")
 
 gas_gone = Item.create!(name: "Doggone Gas Be Gone", description: "Vanquish puppy flatulence before it banishes you.", unit_price: 15, merchant_id: pupsfluffs.id)
 cat_nip = Item.create!(name: "Cat Road Trip Nip", description: "Give cat nip a run for its money with this feline road trip nip.", unit_price: 15, merchant_id: pupsfluffs.id)
 donkey_doz = Item.create!(name: "Donkey Dozer", description: "Oversized, decor friendly pillow so your ridiculously cute baby donkey can sleep in the house by the fire.", unit_price: 30, merchant_id: pupsfluffs.id)
+tissues = Item.create!(name: "Box o' Tissues", description: "Unscented. Not even a dollop of aloe. But very overpriced.", unit_price: 25, merchant_id: everyday_living.id)
 
 paws_deal = pupsfluffs.discounts.create!(name: "Pawsitively Pawsome Wags Away 50%", percentage_discount: 50, quantity_threshold: 4)
 pur_deal = pupsfluffs.discounts.create!(name: "Purrrfect Pricepoint Pinches 20% Off", percentage_discount: 20, quantity_threshold: 7)
@@ -23,6 +27,4 @@ invoice1 = jen.invoices.create!(status: 2)
 ii1 = InvoiceItem.create!(invoice_id: invoice1.id, item_id: gas_gone.id, quantity: 50, unit_price: 15, status: 2)
 ii2 = InvoiceItem.create!(invoice_id: invoice1.id, item_id: cat_nip.id, quantity: 5, unit_price: 15, status: 2)
 ii3 = InvoiceItem.create!(invoice_id: invoice1.id, item_id: donkey_doz.id, quantity: 1, unit_price: 30, status: 2)
-
-transaction1 = invoice1.transactions.create!(credit_card_number: 203942, result: 1)
-transaction2 = invoice1.transactions.create!(credit_card_number: 230948, result: 1)
+ii4 = InvoiceItem.create!(invoice_id: invoice1.id, item_id: tissues.id, quantity: 10, unit_price: 25, status: 2)

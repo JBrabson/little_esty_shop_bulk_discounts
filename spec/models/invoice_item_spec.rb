@@ -35,8 +35,8 @@ RSpec.describe InvoiceItem, type: :model do
     end
   end
 
-  describe 'instance methods' do
-    describe 'test all discount examples using #discount_applied' do
+  describe 'Instance Methods' do
+    describe 'Test all discount examples using #discount_applied' do
 
       it "Example 1: no bulk discounts should be applied." do
         merchant1 = Merchant.create!(name: 'Hair Care')
@@ -120,28 +120,34 @@ RSpec.describe InvoiceItem, type: :model do
       merchant1 = Merchant.create!(name: 'Hair Care')
       item_1 = merchant1.items.create!(name: "Shampoo", description: "This washes your hair", unit_price: 10)
       item_2 = merchant1.items.create!(name: "Conditioner", description: "This makes your hair shiny", unit_price: 8)
+      item_3 = merchant1.items.create!(name: "Hot Oil Treatment", description: "Deep conditions hair", unit_price: 8)
       discount_1 = merchant1.discounts.create!(name: "20%", percentage_discount: 20, quantity_threshold: 10 )
       customer_1 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
       invoice_1 = customer_1.invoices.create!(status: 2)
       ii_1 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_1.id, quantity: 5, unit_price: 10, status: 2, created_at: "2012-03-27 14:54:09")
-      ii_2 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_2.id, quantity: 5, unit_price: 10, status: 0, created_at: "2012-03-29 14:54:09")
+      ii_2 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_2.id, quantity: 5, unit_price: 8, status: 0, created_at: "2012-03-29 14:54:09")
+      ii_3 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_3.id, quantity: 10, unit_price: 8, status: 0, created_at: "2012-03-29 14:54:09")
 
       expect(ii_1.total_revenue).to eq(50)
-      expect(ii_2.total_revenue).to eq(50)
+      expect(ii_2.total_revenue).to eq(40)
+      expect(ii_3.total_revenue).to eq(80)
     end
 
-    it "#revenue_after_discount" do
+    it "#discount" do
       merchant1 = Merchant.create!(name: 'Hair Care')
       item_1 = merchant1.items.create!(name: "Shampoo", description: "This washes your hair", unit_price: 10)
       item_2 = merchant1.items.create!(name: "Conditioner", description: "This makes your hair shiny", unit_price: 8)
+      item_3 = merchant1.items.create!(name: "Hot Oil Treatment", description: "Deep conditions hair", unit_price: 8)
       discount_1 = merchant1.discounts.create!(name: "20%", percentage_discount: 20, quantity_threshold: 10 )
       customer_1 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
       invoice_1 = customer_1.invoices.create!(status: 2)
       ii_1 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_1.id, quantity: 12, unit_price: 10, status: 2, created_at: "2012-03-27 14:54:09")
       ii_2 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_2.id, quantity: 15, unit_price: 10, status: 0, created_at: "2012-03-29 14:54:09")
+      ii_3 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_3.id, quantity: 9, unit_price: 8, status: 0, created_at: "2012-03-29 14:54:09")
 
       expect(ii_1.discount).to eq(24)
       expect(ii_2.discount).to eq(30)
+      expect{ii_3.discount}.to raise_error(NoMethodError)
     end
 
     describe 'final revenue with discount applied and without discount applied' do
@@ -159,6 +165,9 @@ RSpec.describe InvoiceItem, type: :model do
         expect(ii_1.total_revenue).to eq(120)
         expect(ii_1.discount).to eq(24)
         expect(ii_1.final_revenue).to eq(96)
+        expect(ii_2.total_revenue).to eq(150)
+        expect(ii_2.discount).to eq(30)
+        expect(ii_2.final_revenue).to eq(120)
       end
 
       it "#final_revenue without discount" do
@@ -169,10 +178,14 @@ RSpec.describe InvoiceItem, type: :model do
         customer_1 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
         invoice_1 = customer_1.invoices.create!(status: 2)
         ii_1 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_1.id, quantity: 10, unit_price: 10, status: 2, created_at: "2012-03-27 14:54:09")
-        ii_2 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_2.id, quantity: 10, unit_price: 10, status: 0, created_at: "2012-03-29 14:54:09")
+        ii_2 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_2.id, quantity: 12, unit_price: 10, status: 0, created_at: "2012-03-29 14:54:09")
 
         expect(ii_1.total_revenue).to eq(100)
+        expect{ii_1.discount}.to raise_error(NoMethodError)
         expect(ii_1.final_revenue).to eq(100)
+        expect(ii_2.total_revenue).to eq(120)
+        expect{ii_2.discount}.to raise_error(NoMethodError)
+        expect(ii_2.final_revenue).to eq(120)
       end
     end
   end

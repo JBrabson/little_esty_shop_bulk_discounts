@@ -4,16 +4,16 @@ describe Merchant do
   describe "validations" do
     it { should validate_presence_of :name }
   end
+
   describe "relationships" do
     it { should have_many :items }
     it { should have_many(:invoice_items).through(:items) }
     it {should have_many(:invoices).through(:invoice_items)}
     it { should have_many(:customers).through(:invoices) }
     it { should have_many(:transactions).through(:invoices) }
-
   end
 
-  describe "instance methods" do
+  describe "Instance Methods" do
     before :each do
       @merchant1 = Merchant.create!(name: 'Hair Care')
       @merchant2 = Merchant.create!(name: 'Jewelry')
@@ -59,24 +59,52 @@ describe Merchant do
       @transaction5 = Transaction.create!(credit_card_number: 102938, result: 1, invoice_id: @invoice_5.id)
       @transaction6 = Transaction.create!(credit_card_number: 879799, result: 0, invoice_id: @invoice_6.id)
       @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_7.id)
-
     end
-    it "can list items ready to ship" do
+
+    it "displays items ready to ship" do
       expect(@merchant1.ordered_items_to_ship).to eq([@item_1, @item_1, @item_3, @item_4, @item_7, @item_8, @item_4])
     end
-    it "shows a list of favorite customers" do
+
+    it "displays list of favorite customers" do
       expected = @merchant1.favorite_customers.map do |customer|
         customer[:first_name]
       end
       expect(expected).to eq(expected)
     end
 
-    it "top_5_items" do
+    it "displays merchant top five items" do
       expect(@merchant1.top_5_items).to eq([@item_1, @item_2, @item_3, @item_8, @item_4])
     end
 
     it "#select_merchant_invoices" do
-      expect(@merchant1.select_merchant_invoices).to eq([@invoice_1, @invoice_2, @invoice_3, @invoice_4, @invoice_5, @invoice_6, @invoice_7])
+      merchant1 = Merchant.create!(name: 'Hair Care')
+      item_1 = Item.create!(name: "Shampoo", description: "This washes your happy like happy little trees.", unit_price: 7, merchant_id: merchant1.id, status: 1)
+      item_2 = Item.create!(name: "Conditioner", description: "This makes your hair poofy.", unit_price: 7, merchant_id: merchant1.id)
+      item_3 = Item.create!(name: "Brush", description: "Makes the fro grow, bro.", unit_price: 5, merchant_id: merchant1.id)
+
+      merchant2 = Merchant.create!(name: 'Jewelry')
+      item_5 = Item.create!(name: "Bracelet", description: "Wrist bling", unit_price: 200, merchant_id: merchant2.id)
+      item_6 = Item.create!(name: "Necklace", description: "Neck bling", unit_price: 300, merchant_id: merchant2.id)
+
+      customer_1 = Customer.create!(first_name: 'Bob', last_name: 'Ross')
+      customer_2 = Customer.create!(first_name: 'Joey', last_name: 'Smith')
+
+      invoice_1 = Invoice.create!(customer_id: customer_1.id, status: 2)
+      invoice_2 = Invoice.create!(customer_id: customer_1.id, status: 2)
+      invoice_3 = Invoice.create!(customer_id: customer_2.id, status: 2)
+
+      ii_1 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_1.id, quantity: 3, unit_price: 7, status: 2, created_at: "2012-03-27 14:54:09")
+      ii_2 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_2.id, quantity: 3, unit_price: 7, status: 2, created_at: "2012-03-29 14:54:09")
+      ii_3 = InvoiceItem.create!(invoice_id: invoice_1.id, item_id: item_3.id, quantity: 10, unit_price: 5, status: 2, created_at: "2012-03-28 14:54:09")
+      ii_4 = InvoiceItem.create!(invoice_id: invoice_2.id, item_id: item_5.id, quantity: 1, unit_price: 200, status: 2, created_at: "2012-03-30 14:54:09")
+      ii_5 = InvoiceItem.create!(invoice_id: invoice_3.id, item_id: item_3.id, quantity: 3, unit_price: 5, status: 2, created_at: "2012-03-30 14:54:09")
+      ii_6 = InvoiceItem.create!(invoice_id: invoice_3.id, item_id: item_5.id, quantity: 1, unit_price: 200, status: 2, created_at: "2012-04-01 14:54:09")
+      ii_7 = InvoiceItem.create!(invoice_id: invoice_3.id, item_id: item_6.id, quantity: 1, unit_price: 300, status: 2, created_at: "2012-04-02 14:54:09")
+
+      expect(merchant1.select_merchant_invoices).to eq([invoice_1, invoice_3])
+      expect(merchant1.select_merchant_invoices).to_not eq([invoice_1, invoice_1, invoice_1, invoice_3])
+      expect(merchant2.select_merchant_invoices).to eq([invoice_2, invoice_3])
+      expect(merchant2.select_merchant_invoices).to_not eq([invoice_2, invoice_3, invoice_3])
     end
   end
 end
