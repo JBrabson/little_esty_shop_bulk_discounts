@@ -19,7 +19,7 @@ jen = Customer.create!(first_name: "Jennifer", last_name: "Mother of Drago Doggo
     address: "123 More Pets for Me Lane", city: "Arvada", state: "CO", zip: 80003)
 
 invoice1 = jen.invoices.create!(status: 2)
-invoice1.invoice_items <<
+
 ii1 = InvoiceItem.create!(invoice_id: invoice1.id, item_id: gas_gone.id, quantity: 50, unit_price: 15, status: 2)
 ii2 = InvoiceItem.create!(invoice_id: invoice1.id, item_id: cat_nip.id, quantity: 5, unit_price: 15, status: 2)
 ii3 = InvoiceItem.create!(invoice_id: invoice1.id, item_id: donkey_doz.id, quantity: 1, unit_price: 30, status: 2)
