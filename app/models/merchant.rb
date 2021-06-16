@@ -56,4 +56,10 @@ class Merchant < ApplicationRecord
     .created_at
     .to_date
   end
+
+  def select_merchant_invoices
+    invoices
+    .order(:id)
+    .distinct
+  end
 end
