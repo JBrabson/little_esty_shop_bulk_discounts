@@ -22,8 +22,9 @@
     </section>
       <% end %>
   <p>Created on: <%= @invoice.created_at.strftime("%A, %B %d, %Y") %>
-  <p>Total Revenue: $<%= @invoice.total_revenue %>
-  <p>Total Discounted Revenue: <%= @invoice.total_discounted_revenue %></p>
+
+  <p>Total Revenue: $<%= number_with_precision((@invoice.total_revenue.to_f), precision: 2, delimiter: ',') %>
+  <p>Total Discounted Revenue: $<%= number_with_precision((@invoice.total_discounted_revenue.to_f), precision: 2, delimiter: ',') %></p>
 
   <h4>Customer:</h4>
     <%= @invoice.customer.first_name %> <%= @invoice.customer.last_name %><br>
@@ -47,7 +48,8 @@
         <tr class="tr">
           <td style="text-align:center"><%= i.item.name %></td>
           <td style="text-align:center"><%= i.quantity %></td>
-          <td style="text-align:center">$<%= i.unit_price %></td>
+          <td style="text-align:center">$<%= number_with_precision((i.unit_price.to_f), precision: 2, delimiter: ',') %></td>
+
           <td style="text-align:center"><%= i.status%></td><br/>
         </tr>
       <% end %>
