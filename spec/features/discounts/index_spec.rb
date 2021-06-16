@@ -36,14 +36,20 @@ RSpec.describe 'Merchant Bulk Discounts Index' do
   it 'displays link to show page for each discount' do
     within("#discount-#{@discount1.id}") do
       expect(page).to have_link("#{@discount1.name}")
+      expect(page).to_not have_link("#{@discount2.name}")
+      expect(page).to_not have_link("#{@discount3.name}")
     end
 
     within("#discount-#{@discount2.id}") do
       expect(page).to have_link("#{@discount2.name}")
+      expect(page).to_not have_link("#{@discount3.name}")
+      expect(page).to_not have_link("#{@discount1.name}")
     end
 
     within("#discount-#{@discount3.id}") do
       expect(page).to have_link("#{@discount3.name}")
+      expect(page).to_not have_link("#{@discount1.name}")
+      expect(page).to_not have_link("#{@discount2.name}")
     end
   end
 
