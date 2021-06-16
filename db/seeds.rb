@@ -23,3 +23,6 @@ invoice1 = jen.invoices.create!(status: 2)
 ii1 = InvoiceItem.create!(invoice_id: invoice1.id, item_id: gas_gone.id, quantity: 50, unit_price: 15, status: 2)
 ii2 = InvoiceItem.create!(invoice_id: invoice1.id, item_id: cat_nip.id, quantity: 5, unit_price: 15, status: 2)
 ii3 = InvoiceItem.create!(invoice_id: invoice1.id, item_id: donkey_doz.id, quantity: 1, unit_price: 30, status: 2)
+
+transaction1 = invoice1.transactions.create!(credit_card_number: 203942, result: 1)
+transaction2 = invoice1.transactions.create!(credit_card_number: 230948, result: 1)
